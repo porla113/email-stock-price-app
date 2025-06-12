@@ -43,6 +43,7 @@ def send_email(recipient_email, subject, body, body_type):
         print(f"Error sending email: {e}")
 
 if __name__ == "__main__":
+    # Email setup
     bkk_tz = ZoneInfo('Asia/Bangkok')
     date_time = datetime.now(bkk_tz).strftime("%d %b %Y %H:%M:%S")
     stock = "MDX"
@@ -53,4 +54,5 @@ if __name__ == "__main__":
     email_body = f"On {date_time}, <b>{stock}</b> price is <b>{stock_price}</b>!"
     email_body_type = "html"
 
+    # Test sending an email
     send_email(email_recipient, email_subject, email_body, email_body_type)
