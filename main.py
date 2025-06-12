@@ -1,11 +1,12 @@
-import requests, os
+import requests, os, csv
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from send_email import send_email
+from write_csv import write_csv
 
-# Stock list
+# Stock list to check
 stock_list = [
     {
     "symbol": "MDX",
@@ -23,12 +24,19 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleW
 
 BKK_TZ = ZoneInfo('Asia/Bangkok')
 
+
 for stock in stock_list:
+
+    # Request URL
     url = f"https://www.set.or.th/th/market/product/stock/quote/{stock["symbol"]}/price"
     response = requests.get(url, headers=HEADERS)
 
+    # File path
+    file_path = os.path.join("data_csv", stock["symbol"] + ".csv")
+
     # For set.org when it can't find the url it will redirect to another page
-    # So I check if there is a history, it cloud not find the page
+    # So I check if there is a history.
+    # If 0, it found the page
     if len(response.history) == 0:
         # Get html
         src = response.content
@@ -38,28 +46,53 @@ for stock in stock_list:
         stock_price = soup.find("div", class_="stock-info").text
         stock_price = stock_price.strip()
 
-        # Email message
-        load_dotenv()
-        recipient_email = os.getenv("RECIPIENT_EMAIL")
-
         # Get date and time
         date_time = datetime.now(BKK_TZ).strftime("%d %b %Y %H:%M:%S")
 
-        email_subject = "stock price alert!".title()
-        email_body = f"On {date_time}, <b>{stock["symbol"]}</b> price is <b>{stock_price}</b>!"
+        # Data to write
+        stock_data = {
+            "date": date_time,
+            "price": stock_price,
+        }
 
+        # Write stock data to a csv file.
+        write_csv(file_path,stock_data)
+
+        # Test
+        # print("record data")
+        # print(f"{stock["symbol"]}, {date_time}, {stock_price}")
 
         # If the price is outside the threshold, send an email
         if float(stock_price) < stock["min"] or float(stock_price) > stock["max"]:
+
+            # Prepare for email
+            load_dotenv()
+            recipient_email = os.getenv("RECIPIENT_EMAIL")
+
+            # Email message
+            email_subject = "stock price alert!".title()
+            email_body = f"On {date_time}, <b>{stock["symbol"]}</b> price is <b>{stock_price}</b>!"
+
             # Send email
-            # send_email(recipient_email, email_subject, email_body, "html")
-            print("sent email!")
-            print(email_body)
-        else:
-            # Test print email body
-            print("record data")
-            print(f"{stock["symbol"]}, {date_time}, {stock_price}")
+            send_email(recipient_email, email_subject, email_body, "html")
+
+            # Test
+            # print("sent email!")
+            # print(email_body)
 
     else:
+
+        # Cloud not get the page
         date_time = datetime.now(BKK_TZ).strftime("%d %b %Y %H:%M:%S")
-        print(f"{date_time} Cloud not find the {stock["symbol"]} page!!!")
+
+        # Data to write
+        stock_data = {
+            "date": date_time,
+            "price": "n/a",
+        }
+
+        # Write stock data to a csv file.
+        write_csv(file_path,stock_data)
+
+        # Test
+        # print(f"{date_time} Cloud not find the {stock["symbol"]} page!!!")
