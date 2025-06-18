@@ -5,20 +5,10 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from send_email import send_email
 from write_csv import write_csv
+from read_json import json_to_list
 
 # Stock list to check
-stock_list = [
-    {
-    "symbol": "MDX",
-    "min": 2.5,
-    "max": 3.0,
-    },
-    {
-    "symbol": "GULF",
-    "min": 41.0,
-    "max": 46.0,
-    }
-    ]
+stock_list = json_to_list("stocks.json")
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
