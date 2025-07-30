@@ -2,6 +2,16 @@ import os
 import json
 
 def list_to_json(data_list, json_file):
+    """
+    Write a list of dictionaries to a json file.
+
+    Args:
+        data_list (list): List of dictionaries.
+        b (str): File name.
+
+    Returns:
+        None
+    """
     if os.path.exists(json_file):
     
         # Open the file in write mode ("w") and use json.dump() to write the data
@@ -13,10 +23,10 @@ def list_to_json(data_list, json_file):
         print(f"Error: {json_file} is not found.")
 
 if __name__ == "__main__":
-    test_data = {
-        "name": "Alice",
-        "age": 30,
-        "isStudent": False,
-        "courses": ["Math", "Science", "History"]
-    }
+    test_data = [
+    {"name": "Alice", "age": 30, "city": "New York"},
+    {"name": "Bob", "age": 24, "city": "London"},
+    {"name": "Charlie", "age": 35, "city": "Paris"}
+]
+
     list_to_json(test_data, "test_write.json")
