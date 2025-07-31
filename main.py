@@ -61,8 +61,8 @@ for index, stock in enumerate(stock_list):
             stock_data["trend"] = "up"
 
             # Update min and max in stock_list
-            stock_list[index]["max"] = stock["max"]
-            stock_list[index]["min"] = stock["min"]
+            stock_list[index]["max"] = round(stock["max"], 2)
+            stock_list[index]["min"] = round(stock["min"], 2)
 
             # Write stock data to a csv file.
             write_csv(file_path,stock_data)
@@ -94,8 +94,8 @@ for index, stock in enumerate(stock_list):
             stock_data["trend"] = "down"
 
             # Update min and max in stock_list
-            stock_list[index]["max"] = stock["max"]
-            stock_list[index]["min"] = stock["min"]
+            stock_list[index]["max"] = round(stock["max"], 2)
+            stock_list[index]["min"] = round(stock["min"], 2)
 
             # Write stock data to a csv file.
             write_csv(file_path,stock_data)
