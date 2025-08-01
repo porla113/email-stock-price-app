@@ -5,7 +5,7 @@ def write_csv(file_path, stock_data):
     Write data to csv file.
 
     Parameters:
-    stock_data (dict): symbol (str), datetime (str), price (str) as keys. 
+    stock_data (dict): symbol (str), datetime (str), price (str), trend (str) as keys. 
     """
 
     # Check the file exists.
@@ -14,14 +14,14 @@ def write_csv(file_path, stock_data):
         with open(file_path, "a", newline="") as file:
             fieldnames = ['date', 'price']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writerow({'date': stock_data["date"], 'price': stock_data["price"]})
+            writer.writerow({'date': stock_data["date"], 'price': stock_data["price"], 'trend': stock_data["trend"]})
     else:
         # Does not exist, create a new file.
         with open(file_path, "x", newline="") as file:
             fieldnames = ['date', 'price']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerow({'date': stock_data["date"], 'price': stock_data["price"]})
+            writer.writerow({'date': stock_data["date"], 'price': stock_data["price"], 'trend': stock_data["trend"]})
 
 
 if __name__ == "__main__":

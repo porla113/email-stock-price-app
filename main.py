@@ -76,7 +76,7 @@ for index, stock in enumerate(stock_list):
 
             # Email message
             email_subject = "stock price alert!".title()
-            email_body = f"On {date_time}, <b>{stock["symbol"]}</b> price is <b>{stock_price}</b>!<br>Trend:<b>{stock_data["trend"]}</b> "
+            email_body = f"On {date_time}, <b>{stock["symbol"]}</b> price is <b>{stock_price}</b>!<br>Trend: <b>{stock_data["trend"]}</b> "
 
             # Send email
             send_email(recipient_email, email_subject, email_body, "html")
@@ -116,7 +116,7 @@ for index, stock in enumerate(stock_list):
 
         else:
 
-        # Write stock data to a csv file.
+            # Write stock data to a csv file.
             write_csv(file_path,stock_data)
 
     else:
